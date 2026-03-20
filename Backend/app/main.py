@@ -7,7 +7,7 @@ app = FastAPI()
 
 class LoginRequest(BaseModel):
     login_url: str
-    username: str
+    email: str
     password: str    
 
 origins = [

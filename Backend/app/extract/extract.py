@@ -16,7 +16,7 @@ app = FastAPI()
 # -------- Request Schema --------
 class LoginRequest(BaseModel):
     login_url: str
-    username: str
+    email: str
     password: str
 
 
@@ -43,14 +43,14 @@ def login_and_extract(data: LoginRequest):
         wait = WebDriverWait(driver, 15)
 
         # -------- CHANGE THESE SELECTORS BASED ON WEBSITE --------
-        username_input = wait.until(
-            EC.presence_of_element_located((By.ID, "username"))
+        email = wait.until(
+            EC.presence_of_element_located((By.ID, "Email"))
         )
-        password_input = driver.find_element(By.ID, "password")
-        login_button = driver.find_element(By.ID, "submit")
+        password_input = driver.find_element(By.ID, "Password")
+        login_button = driver.find_element(By.ID, "btnLogin")
 
         # -------- Perform Login --------
-        username_input.send_keys(data.username)
+        email.send_keys(data.email)
         password_input.send_keys(data.password)
         login_button.click()
 
@@ -66,24 +66,26 @@ def login_and_extract(data: LoginRequest):
         page_title = driver.title
 
         # Example: get headings / important elements
-        headings = driver.find_elements(By.TAG_NAME, "h1")
-        heading_texts = [h.text for h in headings if h.text.strip()]
+        # headings = driver.find_elements(By.TAG_NAME, "h1")
+        # heading_texts = [h.text for h in headings if h.text.strip()]
 
-        para = driver.find_elements(By.TAG_NAME, "strong")
-        paraText = [p.text for p in para if p.text.strip()]
+        # para = driver.find_elements(By.TAG_NAME, "strong")
+        # paraText = [p.text for p in para if p.text.strip()]
         
-        # # Example: extract links
-        links = driver.find_elements(By.TAG_NAME, "a")
-        link_data = [
-            {"text": link.text, "href": link.get_attribute("href")}
-            for link in links if link.get_attribute("href")
-        ]
+        # # # Example: extract links
+        # links = driver.find_elements(By.TAG_NAME, "a")
+        # link_data = [
+        #     {"text": link.text, "href": link.get_attribute("href")}
+        #     for link in links if link.get_attribute("href")
+        # ]
 
         return {
-            "title":page_title, # limit for response size
-            "heading":heading_texts,
-            "para":paraText,
-            "links": link_data
+            "Login": "Success",
+            "title": page_title
+            # "title":page_title, # limit for response size
+            # "heading":heading_texts,
+            # "para":paraText,
+            # "links": link_data
         
         }
 
